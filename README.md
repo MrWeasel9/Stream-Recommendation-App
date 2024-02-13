@@ -1,6 +1,6 @@
 # Smart Stream Recommendation System
 
-![Project Logo](https://example.com/logo.png)
+
 
 ## Table of Contents
 - [Introduction](#introduction)
