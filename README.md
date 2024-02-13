@@ -5,7 +5,6 @@
 - [Functionality](#functionality)
 - [Commands](#commands)
 - [Recommendation Algorithm](#recommendation-algorithm)
-- [Scoring](#scoring)
 - [Appendix](#appendix)
 
 ## Introduction
@@ -83,13 +82,6 @@ The recommendation algorithm operates as follows:
 
 - For user-specific recommendations, the system selects the top 5 unlistened streams with the highest number of listens from the user's listening history.
 - For surprise recommendations, the system selects 3 unlistened streams added most recently, prioritizing those with the highest number of listens if added on the same day.
-
-## Scoring
-The scoring for the project is distributed as follows:
-
-- 40 points for automated tests validating functionality.
-- 50 points for utilizing at least 4 design patterns with proper justification.
-- 10 points for applying principles of Object-Oriented Programming (inheritance, encapsulation, collections, etc.).
 
 ## Appendix
 The JSON schema for the stream information output is provided below:
