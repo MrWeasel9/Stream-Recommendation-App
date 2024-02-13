@@ -1,8 +1,5 @@
 # Smart Stream Recommendation System
 
-![Java_programming_language_logo svg](https://github.com/MrWeasel9/Stream-Recommendation-App/assets/47690910/0e5e0cb7-a806-4fbf-bf55-8d711682ed34)
-
-
 ## Table of Contents
 - [Introduction](#introduction)
 - [Functionality](#functionality)
