@@ -1,65 +1,118 @@
-Sistem smart de recomandări stream-uri
+# Smart Stream Recommendation System
 
-Introducere
-O aplicație de streaming cunoscută are nevoie de ajutorul vostru pentru a implementa un sistem smart de recomandări pentru utilizatorii existenți. Scopul acestui proiect este de a realiza un algoritm de recomandări pentru stream-uri (muzica, podcast-uri sau audiobooks) pe baza datelor existente despre utilizatorii aplicației (ascultători) și despre creatorii de stream-uri (muzicieni, moderatori de podcast, etc.) sau cele acumulate de-a lungul rularii aplicației.
+![Project Logo](https://example.com/logo.png)
 
-Funcționalitatea aplicației
-Pentru a putea implementa sistemul de recomandări, veți primi datele despre fiecare entitate implicată în fișiere separate, după cum urmează:
+## Table of Contents
+- [Introduction](#introduction)
+- [Functionality](#functionality)
+- [Commands](#commands)
+- [Recommendation Algorithm](#recommendation-algorithm)
+- [Scoring](#scoring)
+- [Appendix](#appendix)
 
-Datele de intrare
-Datele de intrare pentru proiect se vor afla în fișiere de tipul CSV (Comma Separated Values) și puteți alege orice librărie de parsare din Java pentru a citi și parsa fișierele de intrare (ex: OpenCSV).
+## Introduction
+This project, developed during the academic years 2022-2023, focuses on implementing a smart recommendation system for streams within a popular streaming application. The aim is to devise an algorithm for recommending music, podcasts, or audiobooks based on existing user data and stream creator information.
 
-Pentru output, se vor scrie toate comenzile la consola. Metoda main a proiectului se va afla în clasa ProiectPOO și va primi ca parametrii 3 fișiere CSV (în ordinea streamers.csv, streams.csv și users.csv) și un fișier text comenzi.txt, ce va conține comenzile date de-a lungul rulării aplicației.
+## Functionality
+To implement the recommendation system, the project utilizes input data stored in CSV (Comma Separated Values) files. These files contain information about streamers, streams, and users. The application modifies existing data based on user or streamer commands, enabling accurate recommendations.
 
-Streamers
-Datele despre autorii de stream-uri, fie muzicieni, gazde de podcast sau autorii audiobook-urilor se vor găsi în fișierul streamers.csv, unde o linie va reprezenta datele unui streamer:
+### Streamers
+Information about stream creators, including musicians, podcast hosts, or audiobook authors, is stored in the `streamers.csv` file. Each line in the file represents a streamer with the following format:
 
-Nume câmp	Tip de date	Descriere
-streamerType	Integer	tipul de streamer
-id	Integer	identificator unic
-name	String	numele streamer-ului
-Streams
-Datele despre stream-urile postate în aplicație până în momentul curent se vor găsi în fișierul streams.csv, unde o linie va reprezenta datele unui stream:
+```
+streamerType, id, name
+```
 
-Nume câmp	Tip de date	Descriere
-streamType	Integer	tipul de stream
-id	Integer	identificator unic
-streamGenre	Integer	genul stream-ului
-noOfStreams	Long	numărul de ascultări
-streamerId	Integer	id-ul streamer-ului
-length	Long	durata stream-ului în secunde
-dateAdded	Long	data la care a fost adăugat stream-ul (format Unix timestamp)
-name	String	numele streamului
-User
-Datele despre un utilizator al platformei de streaming se vor afla în fișierul de intrare users.csv, unde o linie va reprezenta un utilizator și va avea formatul:
+- **streamerType**: An integer representing the type of streamer (1 for musician, 2 for podcast host, 3 for audiobook author).
+- **id**: Unique identifier for the streamer.
+- **name**: Name of the streamer.
 
-Nume câmp	Tip de date	Descriere
-id	Integer	identificator unic
-name	String	numele utilizatorului
-streams	List<Integer>	lista de stream id, reprezentând istoria stream-urilor ascultate, despărțite printr-un spațiu
-Comenzi
-Pentru a implementa sistemul smart de recomandări, implementarea proiectului trebuie să fie capabilă să modifice datele existente atunci când se rulează comenzi de către utilizatori sau stream-uri, pentru a putea face recomandări corecte.
+### Streams
+Details about streams posted in the application are stored in the `streams.csv` file. Each line represents a stream with the following format:
 
-Comenzi pentru streamers:
-Adaugă Stream: ADD <streamerId:Integer> <streamType: Integer> <id: Integer> <streamGenre: Integer> <length: Long> <name:String> - Nu se printează nimic la consolă, dar se modifică datele aplicației.
+```
+streamType, id, streamGenre, noOfStreams, streamerId, length, dateAdded, name
+```
 
-Listează streamurile unui streamer: LIST <streamerId:Integer> - Se va afișa în format JSON o listă de streams.
+- **streamType**: An integer representing the type of stream (1 for music, 2 for podcast, 3 for audiobook).
+- **id**: Unique identifier for the stream.
+- **streamGenre**: Integer representing the genre of the stream.
+- **noOfStreams**: Number of listens the stream has received.
+- **streamerId**: ID of the streamer who published the stream.
+- **length**: Duration of the stream in seconds.
+- **dateAdded**: Unix timestamp indicating when the stream was added.
+- **name**: Name of the stream.
 
-Șterge Stream: DELETE <streamerId:Integer> <streamId:Integer> - Nu se printează nimic la consolă, dar se modifică datele aplicației.
+### Users
+User data is stored in the `users.csv` file. Each line represents a user with the following format:
 
-Comenzi pentru utilizatori:
-Listează istoria de ascultare a utilizatorului: LIST <userId: Integer> - Se va afișa în format JSON o listă de streams.
+```
+id, name, streams
+```
 
-Ascultă un stream: LISTEN <userId: Integer> <streamId:Integer> - Nu se printează nimic la consolă, dar se modifică datele aplicației.
+- **id**: Unique identifier for the user.
+- **name**: User's name.
+- **streams**: List of stream IDs representing the user's listening history.
 
-Recomandă 5 stream-uri după preferințe: RECOMMEND [SONG | PODCAST | AUDIOBOOK] - Se va afișa în format JSON o listă de streams recomandate.
+## Commands
+The application supports commands executed by both streamers and users to interact with the system.
 
-Recomandă 3 stream-uri surpriză: SURPRISE [SONG | PODCAST | AUDIOBOOK] - Se va afișa în format JSON o listă de streams recomandate.
+### Streamer Commands
+1. **Add Stream**: Add a new stream.
+   - Format: `ADD <streamerId:Integer> <streamType:Integer> <id:Integer> <streamGenre:Integer> <length:Long> <name:String>`
+   
+2. **List Streams**: List streams of a streamer.
+   - Format: `LIST <streamerId:Integer>`
+   
+3. **Delete Stream**: Delete a stream.
+   - Format: `DELETE <streamerId:Integer> <streamId:Integer>`
 
-Algoritmul de recomandare
-Algoritmul de recomandare a stream-urilor va fi următorul:
+### User Commands
+1. **List Listening History**: List the listening history of a user.
+   - Format: `LIST <userId:Integer>`
+   
+2. **Listen to Stream**: Listen to a stream.
+   - Format: `LISTEN <userId:Integer> <streamId:Integer>`
+   
+3. **Recommend Streams**: Recommend streams based on user preferences.
+   - Format: `RECOMMEND <userId:Integer> [SONG | PODCAST | AUDIOBOOK]`
+   
+4. **Surprise Streams**: Get surprise stream recommendations.
+   - Format: `SURPRISE <userId:Integer> [SONG | PODCAST | AUDIOBOOK]`
 
-Pentru recomandările bazate pe preferințe:
-Din lista de streamers ascultați de utilizator veți alege top 5 stream-uri (neascultate) cu cele mai multe ascultări pentru tipul de stream pasat ca parametru.
-Pentru recomandările surpriză:
-Din lista de streamers din aplicație, ce nu au fost ascultați de utilizator, veți alege 3 stream-uri ce au fost adăugate cel mai recent. Dacă au fost adăugate în aceeași zi, atunci veți alege stream-ul cu cele mai multe ascultări pentru tipul de stream pasat ca parametru.
+## Recommendation Algorithm
+The recommendation algorithm operates as follows:
+
+- For user-specific recommendations, the system selects the top 5 unlistened streams with the highest number of listens from the user's listening history.
+- For surprise recommendations, the system selects 3 unlistened streams added most recently, prioritizing those with the highest number of listens if added on the same day.
+
+## Scoring
+The scoring for the project is distributed as follows:
+
+- 40 points for automated tests validating functionality.
+- 50 points for utilizing at least 4 design patterns with proper justification.
+- 10 points for applying principles of Object-Oriented Programming (inheritance, encapsulation, collections, etc.).
+
+## Appendix
+The JSON schema for the stream information output is provided below:
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "streamerName": {"type": "string"},
+        "noOfStreams": {"type": "string"},
+        "length": {"type": "string"},
+        "dateAdded": {"type": "string"}
+      },
+      "required": ["id", "name", "streamerName", "noOfStreams", "length", "dateAdded"]
+    }
+  ]
+}
+```
